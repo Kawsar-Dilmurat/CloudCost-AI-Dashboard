@@ -1,0 +1,440 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: CloudCost AI API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: resources
+    description: AWS resource management
+  - name: analysis
+    description: Cost analysis operations
+  - name: dashboard
+    description: Dashboard summary data
+  - name: recommendations
+    description: AI-generated recommendations
+  - name: reports
+    description: Historical analysis reports
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /resources:
+    get:
+      operationId: getResources
+      tags: [resources]
+      summary: List all AWS resources
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [EC2, RDS, S3, EBS]
+        - name: priority
+          in: query
+          schema:
+            type: string
+            enum: [critical, high, medium, low]
+        - name: issue
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of resources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Resource"
+
+  /resources/seed:
+    post:
+      operationId: seedResources
+      tags: [resources]
+      summary: Seed sample AWS resource data
+      responses:
+        "200":
+          description: Seeded successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeedResult"
+
+  /analyze:
+    post:
+      operationId: analyzeResources
+      tags: [analysis]
+      summary: Run cost analysis and flag issues
+      responses:
+        "200":
+          description: Analysis complete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalysisResult"
+
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [dashboard]
+      summary: Get dashboard summary data
+      responses:
+        "200":
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardData"
+
+  /recommendations:
+    get:
+      operationId: getRecommendations
+      tags: [recommendations]
+      summary: Get AI-generated optimization recommendations
+      responses:
+        "200":
+          description: Recommendations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecommendationsData"
+
+  /reports:
+    get:
+      operationId: getReports
+      tags: [reports]
+      summary: Get list of historical analysis reports
+      responses:
+        "200":
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Report"
+
+  /reports/{id}:
+    get:
+      operationId: getReport
+      tags: [reports]
+      summary: Get a specific report by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Report detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportDetail"
+        "404":
+          description: Report not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Resource:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          enum: [EC2, RDS, S3, EBS]
+        region:
+          type: string
+        environment:
+          type: string
+          enum: [production, staging, development]
+        monthlyCost:
+          type: number
+        cpuUsage:
+          type: number
+          nullable: true
+        isAttached:
+          type: boolean
+          nullable: true
+        hasLifecyclePolicy:
+          type: boolean
+          nullable: true
+        hasCloudwatchAlarms:
+          type: boolean
+          nullable: true
+        port22Open:
+          type: boolean
+          nullable: true
+        issue:
+          type: string
+          nullable: true
+        priority:
+          type: string
+          enum: [critical, high, medium, low]
+          nullable: true
+        recommendation:
+          type: string
+          nullable: true
+        estimatedSavings:
+          type: number
+          nullable: true
+        isAnalyzed:
+          type: boolean
+      required:
+        - id
+        - name
+        - type
+        - region
+        - environment
+        - monthlyCost
+        - isAnalyzed
+
+    SeedResult:
+      type: object
+      properties:
+        message:
+          type: string
+        count:
+          type: integer
+      required:
+        - message
+        - count
+
+    AnalysisResult:
+      type: object
+      properties:
+        message:
+          type: string
+        issuesFound:
+          type: integer
+        totalSavings:
+          type: number
+        reportId:
+          type: integer
+      required:
+        - message
+        - issuesFound
+        - totalSavings
+        - reportId
+
+    DashboardData:
+      type: object
+      properties:
+        totalMonthlyCost:
+          type: number
+        estimatedWaste:
+          type: number
+        potentialSavingsPct:
+          type: number
+        resourceCount:
+          type: integer
+        highPriorityIssues:
+          type: integer
+        securityWarnings:
+          type: integer
+        costByType:
+          type: array
+          items:
+            $ref: "#/components/schemas/CostByType"
+        savingsByIssue:
+          type: array
+          items:
+            $ref: "#/components/schemas/SavingsByIssue"
+        topOpportunities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Resource"
+      required:
+        - totalMonthlyCost
+        - estimatedWaste
+        - potentialSavingsPct
+        - resourceCount
+        - highPriorityIssues
+        - securityWarnings
+        - costByType
+        - savingsByIssue
+        - topOpportunities
+
+    CostByType:
+      type: object
+      properties:
+        type:
+          type: string
+        totalCost:
+          type: number
+        count:
+          type: integer
+      required:
+        - type
+        - totalCost
+        - count
+
+    SavingsByIssue:
+      type: object
+      properties:
+        issue:
+          type: string
+        totalSavings:
+          type: number
+        count:
+          type: integer
+      required:
+        - issue
+        - totalSavings
+        - count
+
+    RecommendationsData:
+      type: object
+      properties:
+        healthScore:
+          type: integer
+        healthLabel:
+          type: string
+        summary:
+          type: string
+        topActions:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecommendedAction"
+        estimatedMonthlySavings:
+          type: number
+        businessImpact:
+          type: string
+        technicalPlan:
+          type: array
+          items:
+            type: string
+        lastAnalyzed:
+          type: string
+          nullable: true
+      required:
+        - healthScore
+        - healthLabel
+        - summary
+        - topActions
+        - estimatedMonthlySavings
+        - businessImpact
+        - technicalPlan
+
+    RecommendedAction:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        savings:
+          type: number
+        priority:
+          type: string
+        effort:
+          type: string
+      required:
+        - title
+        - description
+        - savings
+        - priority
+        - effort
+
+    Report:
+      type: object
+      properties:
+        id:
+          type: integer
+        createdAt:
+          type: string
+        totalMonthlyCost:
+          type: number
+        estimatedWaste:
+          type: number
+        potentialSavings:
+          type: number
+        issueCount:
+          type: integer
+        resourceCount:
+          type: integer
+      required:
+        - id
+        - createdAt
+        - totalMonthlyCost
+        - estimatedWaste
+        - potentialSavings
+        - issueCount
+        - resourceCount
+
+    ReportDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+        createdAt:
+          type: string
+        totalMonthlyCost:
+          type: number
+        estimatedWaste:
+          type: number
+        potentialSavings:
+          type: number
+        issueCount:
+          type: integer
+        resourceCount:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: "#/components/schemas/Resource"
+      required:
+        - id
+        - createdAt
+        - totalMonthlyCost
+        - estimatedWaste
+        - potentialSavings
+        - issueCount
+        - resourceCount
+        - resources
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

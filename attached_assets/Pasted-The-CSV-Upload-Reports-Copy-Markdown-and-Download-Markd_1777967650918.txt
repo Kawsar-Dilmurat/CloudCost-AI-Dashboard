@@ -1,0 +1,196 @@
+The CSV Upload, Reports, Copy Markdown, and Download Markdown features are working.
+
+Now please polish the generated Markdown report output and improve the report export button labels so the feature is easier for normal users to understand.
+
+Do not redesign the app.
+Do not add new major features.
+Do not change the existing dashboard or analysis logic.
+Do not remove existing working features.
+Focus on making the exported report clean, professional, readable, user-friendly, and compatible with Windows / VS Code / GitHub Markdown.
+
+====================================================
+1. Rename export buttons for better user understanding
+====================================================
+
+In the report detail view/modal, rename:
+
+- “Copy Markdown” → “Copy Report”
+- “Download Markdown” → “Download Report (.md)”
+
+Keep the same functionality:
+- “Copy Report” should copy the Markdown report text to the clipboard.
+- “Download Report (.md)” should download the same report as a .md file.
+
+Add a small helper text below the buttons:
+
+“Exports as a Markdown (.md) technical report for GitHub, engineering documentation, and team sharing.”
+
+Also update success messages:
+- “Markdown report copied.” → “Report copied to clipboard.”
+- “Markdown report downloaded.” → “Report downloaded as a .md file.”
+
+Do not remove the Markdown functionality. Just make the labels more user-friendly.
+
+====================================================
+2. Remove special symbols and broken characters
+====================================================
+
+The downloaded .md report currently shows strange square/broken symbols in the “Top Optimization Opportunities” section.
+
+Remove all emojis, special icon characters, and unusual separators from the generated Markdown report.
+
+Do not use:
+- emoji icons
+- decorative symbols
+- unsupported separators
+- special Unicode icons that may render as boxes
+
+Use only simple Markdown-safe characters:
+- hyphen: -
+- colon: :
+- parentheses: ()
+- standard numbered lists
+- standard bullet lists
+
+====================================================
+3. Improve Top Optimization Opportunities formatting
+====================================================
+
+Change the Top Optimization Opportunities section from one-line compressed entries to a clean multi-line format.
+
+Use this format:
+
+## Top Optimization Opportunities
+
+1. **api-server-prod-02**
+   - Type: EC2
+   - Issue: Underutilized EC2 Instance
+   - Estimated Savings: +$240.00/mo
+
+2. **web-server-prod-01**
+   - Type: EC2
+   - Issue: Underutilized EC2 Instance
+   - Estimated Savings: +$160.00/mo
+
+3. **postgres-main-prod**
+   - Type: RDS
+   - Issue: Oversized RDS Instance
+   - Estimated Savings: +$157.50/mo
+
+Use real report data. Do not hard-code these exact resources.
+
+====================================================
+4. Improve Executive Summary capitalization
+====================================================
+
+Ensure issue category names are properly capitalized in the Executive Summary.
+
+For example:
+Use:
+“Underutilized EC2 Instance”
+Not:
+“underutilized ec2 instance”
+
+Use:
+“Oversized RDS Instance”
+Not:
+“oversized rds instance”
+
+Use:
+“Missing S3 Lifecycle Policy”
+Not:
+“missing s3 lifecycle policy”
+
+====================================================
+5. Add Overall Status under Key Metrics
+====================================================
+
+In the Key Metrics section, include both:
+
+- Cloud Health Score: 54/100
+- Overall Status: Needs Attention
+
+Use the actual current report score and status from the selected report.
+
+====================================================
+6. Improve Key Metrics formatting
+====================================================
+
+Keep the existing Key Metrics section, but make sure all money values use the same format:
+
+- Total Monthly Cost: $2,058.00/mo
+- Estimated Monthly Waste: $884.75/mo
+- Potential Savings: +$884.75/mo (43.0%)
+- Resources Analyzed: 9
+- Issues Found: 9
+- Cloud Health Score: 54/100
+- Overall Status: Needs Attention
+
+Use real dynamic values from the selected report.
+
+====================================================
+7. Improve Savings by Issue Type formatting
+====================================================
+
+Keep this section, but make sure all values use consistent formatting:
+
+- Underutilized EC2 Instance: +$480.00/mo
+- Oversized RDS Instance: +$290.50/mo
+- Missing S3 Lifecycle Policy: +$51.25/mo
+- Unattached EBS Volume: +$63.00/mo
+- Public SSH Exposure: +$0.00/mo
+- Missing CloudWatch Alarms: +$0.00/mo
+
+Use real report values.
+
+====================================================
+8. Improve Technical Action Plan
+====================================================
+
+The Technical Action Plan should always start from 1 and be cleanly formatted.
+
+Use this style:
+
+## Technical Action Plan
+
+1. [Week 1] Review underutilized EC2 instances using AWS Compute Optimizer. Identify right-size targets and consider Reserved Instances or Savings Plans for committed workloads.
+2. [Week 1-2] Evaluate RDS instance sizing with AWS Performance Insights. Schedule a maintenance window to downsize to the next smaller instance class.
+3. [Week 2] Audit unattached EBS volumes. Create snapshots for volumes that may be needed, then delete the rest. Automate future detection with AWS Config rules.
+4. [Week 2-3] Apply S3 lifecycle policies. Transition objects older than 30 days to S3 Standard-IA and objects older than 90 days to S3 Glacier.
+5. [Week 3] Re-run CloudCost AI after optimization changes and compare the new monthly cost, savings potential, and Cloud Health Score.
+
+If some issue categories do not exist in the report, still include the final “Re-run CloudCost AI” step as the closing step.
+
+====================================================
+9. Add a clean footer note
+====================================================
+
+At the bottom of the .md report, keep the note but make it slightly more polished:
+
+## Notes
+
+This report was generated using deterministic cloud optimization rules. The current version supports sample data and uploaded CSV resource inventories. The application is designed to be AI-ready for future executive summary generation, while keeping cost and risk findings rule-based and explainable.
+
+====================================================
+10. Ensure copy and download use the same content
+====================================================
+
+Make sure:
+- Copy Report
+- Download Report (.md)
+
+both use the exact same cleaned Markdown report content.
+
+The downloaded file should open cleanly in VS Code, GitHub Markdown preview, and plain text editors without broken characters.
+
+====================================================
+11. Keep existing functionality working
+====================================================
+
+After this change:
+- Seed Resources should still work.
+- Upload CSV should still work.
+- Run Analysis should still work.
+- Report detail view should still open.
+- Copy Report should work.
+- Download Report (.md) should work.

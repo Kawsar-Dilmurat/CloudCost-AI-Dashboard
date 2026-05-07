@@ -1,0 +1,192 @@
+The CloudCost AI MVP is working. Please continue improving the existing app step by step.
+
+Do not redesign the whole app. Keep the current dark SaaS dashboard style, sidebar navigation, layout structure, and existing backend features. Focus only on polish, credibility, visual clarity, and fixing small logic issues.
+
+Required changes:
+
+1. Fix Cloud Health Score logic
+The Recommendations page currently shows an Optimization Score of 0, which looks too harsh and may look like a bug.
+
+Rename:
+- “Optimization Score” → “Cloud Health Score”
+
+Use a more realistic score calculation:
+- Start from 100
+- Subtract 5 points for each critical issue
+- Subtract 4 points for each high priority issue
+- Subtract 2 points for each medium priority issue
+- Subtract 1 point for each low priority issue
+- Subtract an additional penalty based on savings percentage:
+  - savings percentage < 10%: subtract 5
+  - 10%–25%: subtract 10
+  - 25%–40%: subtract 15
+  - over 40%: subtract 20
+- Clamp score between 15 and 100, unless there are no resources loaded.
+
+For the current demo data, the score should not be 0. It should probably be around 25–45 and show status “Critical” or “Needs Attention”.
+
+Status labels:
+- 80–100: Healthy
+- 60–79: Good
+- 40–59: Needs Attention
+- 15–39: Critical
+
+2. Fix Recommendations wording
+Change the Recommendations page subtitle from:
+“AI-generated action plan based on your latest analysis.”
+
+To:
+“Executive action plan generated from rule-based cloud optimization analysis, designed for future AI integration.”
+
+Add a small note below the subtitle or inside the summary section:
+“Cost findings are calculated using deterministic optimization rules. The summary layer is AI-ready for future OpenAI integration.”
+
+Do not claim that real AI is being used unless the app actually calls an AI API.
+
+3. Fix Technical Action Plan numbering
+The Technical Action Plan currently starts from 2, 3, 4, 5.
+This is confusing because the section says “Step-by-step instructions”.
+
+Make sure the action plan always starts from:
+1.
+2.
+3.
+4.
+5.
+
+If the array is generated from top recommendations, use the visible list index + 1.
+Do not use resource IDs or backend issue IDs as the displayed step number.
+
+4. Improve chart colors
+The dashboard charts currently use very dark gray bars, which look flat and hard to read.
+
+Please assign clear, professional colors by category while keeping the dark theme.
+
+Cost by Resource Type colors:
+- EC2: blue/cyan
+- RDS: purple/indigo
+- S3: green/emerald
+- EBS: orange/amber
+- Other: gray
+
+Savings by Issue Type colors:
+- Underutilized EC2: cyan/blue
+- Oversized RDS: purple
+- Missing S3 Lifecycle Policy: emerald/green
+- Unattached EBS Volume: amber/orange
+- Security Warning: red
+- Reliability Risk: yellow
+
+Use colors with enough contrast on the dark background.
+Also improve tooltip styling if possible.
+
+5. Add chart legends or labels
+Add small legends or clearly readable labels so users can understand which bar color maps to which AWS resource type or issue type.
+
+If the chart library supports value labels on hover only, that is okay, but make sure the chart is visually understandable.
+
+6. Improve dashboard chart readability
+Increase contrast for:
+- axis labels
+- tick labels
+- grid lines
+- bar fill colors
+
+The charts should look like a polished SaaS analytics dashboard, not default dark gray placeholders.
+
+7. Resource Detail View
+Add a resource detail modal or side panel on the Resources page.
+
+Each resource row should have a “View Details” button or be clickable.
+When opened, the detail view should show:
+- Resource name
+- Resource type
+- Region
+- Environment
+- Monthly cost
+- Usage/status
+- Issue detected
+- Priority
+- Estimated monthly savings
+- Why this resource was flagged
+- Recommended action
+- Risk note before applying the action
+
+Use resource-type-specific explanations:
+
+For underutilized EC2:
+Why flagged: “Average CPU usage is below the 10% threshold.”
+Recommended action: “Right-size the instance, stop it during off-hours, or validate whether it can be terminated.”
+Risk note: “For production workloads, verify traffic patterns and dependencies before making changes.”
+
+For oversized RDS:
+Why flagged: “CPU utilization is below 15% while monthly cost is above $100.”
+Recommended action: “Review instance class and consider downsizing during a maintenance window.”
+Risk note: “Validate performance requirements, backups, and maintenance windows before resizing.”
+
+For unattached EBS:
+Why flagged: “The volume is not attached to any EC2 instance but is still generating monthly storage cost.”
+Recommended action: “Create a snapshot if needed, then delete the unattached volume.”
+Risk note: “Confirm the volume is not needed for rollback or recovery before deletion.”
+
+For missing S3 lifecycle policy:
+Why flagged: “The bucket has no lifecycle policy and may be storing old objects in expensive storage classes.”
+Recommended action: “Add lifecycle rules to transition older objects to S3 Standard-IA or Glacier.”
+Risk note: “Confirm retention and compliance requirements before archival or deletion.”
+
+For security issue:
+Why flagged: “Port 22 is open to the public internet.”
+Recommended action: “Restrict SSH access to trusted IP ranges or use AWS Systems Manager Session Manager.”
+Risk note: “Changing access rules may impact administrators who currently rely on SSH.”
+
+For reliability issue:
+Why flagged: “Production resource does not have CloudWatch alarms configured.”
+Recommended action: “Add CloudWatch alarms for CPU, memory if available, storage, and error rates.”
+Risk note: “Alarms should be tuned to avoid alert fatigue.”
+
+8. Improve priority badge consistency
+Use consistent priority labels and colors:
+- Critical: red
+- High: amber/orange
+- Medium: blue
+- Low: slate/gray
+- Optimized: green
+
+Apply this consistently in Resources, Recommendations, and Reports detail views.
+
+9. Improve money formatting
+Use consistent formatting:
+- $4,116.00/mo
+- $1,630.50/mo
+- +$360.00/mo
+
+Avoid inconsistent formats like:
+- +$1,630.5
+- $1630.50/month
+- +$360.0
+
+10. Improve Executive Summary text
+Make the executive summary sound like a professional cloud cost review.
+
+It should include:
+- total resources analyzed
+- total monthly cost
+- estimated monthly savings
+- savings percentage
+- highest-impact issue category
+- recommended first action
+
+Example tone:
+“CloudCost AI analyzed 17 AWS-style resources with a total monthly spend of $4,116.00/mo. The analysis identified 15 optimization opportunities with an estimated $1,630.50/mo in potential savings, representing 39.6% of the current monthly bill. The largest savings category is underutilized EC2 instances. The recommended first action is to validate low-utilization compute workloads and right-size or stop unused instances after confirming production dependencies.”
+
+11. Improve small UI details
+- Make action buttons easier to find near the top of the Dashboard page.
+- Keep the sidebar actions if they already exist, but do not rely on them as the only workflow entry point.
+- Add hover states to table rows and buttons.
+- Make table rows easier to scan with subtle separators.
+- Keep the app responsive.
+
+12. Do not add real AWS API integration yet.
+13. Do not add real OpenAI API integration yet.
+14. Do not remove existing working functionality.
+15. Make sure Seed Data and Run Analysis still work after these changes.
