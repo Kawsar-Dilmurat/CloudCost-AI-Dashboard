@@ -181,26 +181,27 @@ Then open the frontend development URL shown in the terminal.
 ## Screenshots
 
 ### Dashboard
-<img width="2479" height="1411" alt="Dashboard_1" src="https://github.com/user-attachments/assets/12d35fbf-8b19-45ec-b778-037c96b2bbab" />
-<img width="2484" height="1438" alt="Dashboard_2" src="https://github.com/user-attachments/assets/232a7ab3-dae8-49eb-9767-032df2668bd5" />
+<img src="Screenshots/Dashboard_1.png" alt="CloudCost AI Dashboard" width="900">
+<img src="Screenshots/Dashboard_2.png" alt="CloudCost AI Dashboard" width="900">
 
 
 ### Resource Analyzer
-<img width="2483" height="1433" alt="Resources" src="https://github.com/user-attachments/assets/5578261a-2886-45cc-bd6a-94aa7ea20c5d" />
+<img src="Screenshots/Dashboard_2.png" alt="CloudCost AI Dashboard" width="900">
 
 
 ### Executive Recommendations
-<img width="2499" height="1256" alt="Recommendations_1" src="https://github.com/user-attachments/assets/09e677fb-1c3f-4567-805b-0ab998383c61" />
-<img width="2492" height="1243" alt="Recommendations_2" src="https://github.com/user-attachments/assets/0da4fa1f-b4c6-4203-aac1-2e174efd893f" />
+<img src="Screenshots/Recommendations_1.png" alt="CloudCost AI Recommendations 1" width="900">
+
+<img src="Screenshots/Recommendations_2.png" alt="CloudCost AI Recommendations 2" width="900">
 
 
 ### Report Export
-<img width="2556" height="1031" alt="Reports_1" src="https://github.com/user-attachments/assets/00e63f70-ff71-4d67-9b66-622a416f9afd" />
-<img width="1986" height="1308" alt="Reports_2" src="https://github.com/user-attachments/assets/d603481f-71c3-4444-9429-61c5dc8e3690" />
+<img src="Screenshots/Reports_1.png" alt="CloudCost AI Reports 1" width="900">
+<img src="Screenshots/Reports_2.png" alt="CloudCost AI Reports 2" width="900">
 
 ### Architecture
-<img width="2518" height="1390" alt="Architecture" src="https://github.com/user-attachments/assets/5d5fad87-9f03-4f3a-9e4c-e7fa1e5465b1" />
-
+<img src="Screenshots/Architecture.png" alt="CloudCost AI Architecture" width="900">
+<img src="Screenshots/Architecture_2.png" alt="CloudCost AI Architecture 2" width="900">
 ---
 
 ## Demo Workflow
