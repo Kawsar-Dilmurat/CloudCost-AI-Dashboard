@@ -186,7 +186,7 @@ Then open the frontend development URL shown in the terminal.
 
 
 ### Resource Analyzer
-<img src="Screenshots/Dashboard_2.png" alt="CloudCost AI Dashboard" width="900">
+<img src="Screenshots/Resources.png" alt="CloudCost AI Resources" width="900">
 
 
 ### Executive Recommendations
